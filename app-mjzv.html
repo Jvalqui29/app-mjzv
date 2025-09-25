@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>📱 App MJZV - Planificador de Citas</title>
+  <style>
+    :root{
+      --bg:#0b0f14;--card:#121923;--muted:#7f8ea3;--accent:#00e0b8;--accent2:#7c5cff;--txt:#eaf2ff;--ok:#2ee59d;--warn:#ffcf5c;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:radial-gradient(1200px 1200px at 80% -200px,rgba(124,92,255,.35),transparent),
+                 radial-gradient(1000px 1000px at -100px 120%,rgba(0,224,184,.25),transparent),var(--bg);
+      color:var(--txt);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Noto Sans", Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    .wrap{min-height:100svh;display:grid;place-items:center;padding:18px}
+    .card{
+      width:min(520px,100%);
+      background:linear-gradient(180deg,rgba(255,255,255,.04),transparent);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:22px;
+      padding:20px 18px 16px;
+      box-shadow:0 20px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03)
+    }
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between}
+    .logo{display:flex;align-items:center;gap:10px}
+    .heart{width:32px;height:32px;filter:drop-shadow(0 2px 6px rgba(255,0,122,.35));}
+    h1{font-size:22px;margin:0;letter-spacing:.2px;background:linear-gradient(45deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;}
+    p.lead{margin:.5rem 0 1rem;color:var(--muted);font-size:14px;line-height:1.4}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.15);color:var(--muted);font-size:13px}
+    .reveal{margin:14px 0;border-radius:16px;padding:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+    .hold{display:block;width:100%;padding:14px 16px;border-radius:12px;background:linear-gradient(135deg,rgba(124,92,255,.18),rgba(0,224,184,.18));border:1px solid rgba(255,255,255,.16);color:#fff;text-align:center;font-weight:600;cursor:pointer;}
+    .progress{height:4px;background:rgba(255,255,255,.1);border-radius:2px;margin:12px 0 0;overflow:hidden}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.1s;border-radius:2px}
+    .form-row{display:flex;gap:12px;margin:16px 0;flex-wrap:wrap}
+    label{color:var(--txt);font-size:13px;font-weight:600;margin:0 0 6px;display:block}
+    select,input{
+      padding:12px 14px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.15);
+      background:rgba(255,255,255,.03);
+      color:var(--txt);
+      font-size:14px;
+      min-width:0;
+      flex:1
+    }
+    select{min-width:120px;appearance:none;background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");background-position:right 8px center;background-repeat:no-repeat;background-size:16px;padding-right:40px}
+    select option{background:var(--card);color:var(--txt)}
+    input::placeholder{color:var(--muted)}
+    input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,224,184,.1)}
+    .full{width:100%}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:16px 24px;
+      border-radius:12px;
+      border:none;
+      font-weight:600;
+      font-size:14px;
+      cursor:pointer;
+      transition:all 0.3s ease;
+      text-decoration:none;
+      box-sizing:border-box;
+      min-height:52px;
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:#000;
+      box-shadow:0 6px 20px rgba(0,224,184,.3);
+    }
+    .btn-secondary{
+      background:rgba(255,255,255,.1);
+      color:var(--txt);
+      border:1px solid rgba(255,255,255,.2);
+      box-shadow:0 4px 12px rgba(0,0,0,.2);
+    }
+    .btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 8px 25px rgba(0,0,0,.3);
+    }
+    .btn-primary:hover{
+      box-shadow:0 8px 30px rgba(0,224,184,.4);
+    }
+    .btn-secondary:hover{
+      background:rgba(255,255,255,.15);
+      border-color:rgba(255,255,255,.3);
+    }
+    .btn:active{transform:translateY(-1px)}
+    .category{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin:20px 0}
+    .cat-btn{padding:10px 12px;border:none;border-radius:8px;background:rgba(255,255,255,.05);color:var(--muted);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;border:1px solid transparent}
+    .cat-btn.active{background:rgba(0,224,184,.15);color:var(--accent);border-color:rgba(0,224,184,.3)}
+    .instruction{color:var(--muted);font-size:14px;margin:20px 0 16px;font-weight:500}
+    .grid{display:grid;grid-template-columns:1fr;gap:10px;margin:12px 0}
+    .chip{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:14px 16px;
+      border-radius:12px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.1);
+      font-size:14px;
+      cursor:pointer;
+      transition:all 0.2s;
+      min-height:50px;
+    }
+    .chip input{display:none}
+    .chip.active{background:rgba(0,224,184,.15);border-color:rgba(0,224,184,.3);color:var(--accent)}
+    .chip:hover{border-color:rgba(255,255,255,.2)}
+    .chip .icon{font-size:18px;flex-shrink:0}
+    .chip-text{flex:1}
+    .section{margin:20px 0;padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
+    .result{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:12px;
+      padding:16px;
+      margin:16px 0
+    }
+    textarea{
+      width:100%;
+      min-height:280px;
+      padding:16px;
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:10px;
+      background:rgba(255,255,255,.03);
+      color:var(--txt);
+      font-family:inherit;
+      font-size:14px;
+      line-height:1.5;
+      resize:vertical
+    }
+    textarea:focus{outline:none;border-color:var(--accent)}
+    .toast{
+      position:fixed;
+      top:20px;
+      left:50%;
+      transform:translateX(-50%) translateY(-100px);
+      background:rgba(0,0,0,.9);
+      color:#fff;
+      padding:12px 20px;
+      border-radius:8px;
+      font-size:14px;
+      z-index:1000;
+      transition:all 0.3s ease;
+      backdrop-filter:blur(10px)
+    }
+    .toast.show{transform:translateX(-50%) translateY(0)}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0}
+    .actions .btn{flex:1;min-width:140px;text-align:center}
+    @media(max-width:480px){
+      .card{padding:16px 14px}
+      .form-row{flex-direction:column}
+      .actions{flex-direction:column}
+      .actions .btn{width:100%}
+      h1{font-size:20px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <div class="logo">
+          <svg class="heart" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <h1>App MJZV</h1>
+        </div>
+      </header>
+
+      <p class="lead">Generador de ideas románticas y citas especiales para Michael y Javiera ❤️</p>
+
+      <div class="reveal" style="display: none;" id="secret">
+        <div class="pill">
+          🎉 ¡Felicidades por encontrar esto! Esta app se hizo con mucho amor para que tengamos las mejores citas juntos ❤️
+        </div>
+      </div>
+
+      <button class="hold" id="holdBtn">Mantén presionado 2 segundos ❤️</button>
+      <div class="progress" style="display: none;" id="progress">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <div class="section">
+        <div style="margin-bottom: 20px;">
+          <label>🎭 Ambiente</label>
+          <select id="moodSelect" class="full">
+            <option value="romantico">💕 Romántico</option>
+            <option value="divertido">😄 Divertido</option>
+            <option value="relajado">😌 Relajado</option>
+            <option value="aventurero">🗺️ Aventurero</option>
+            <option value="productivo">💻 Productivo</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label>⏰ Horario</label>
+          <select id="timeSelect" class="full">
+            <option value="mañana">🌅 Mañana</option>
+            <option value="tarde" selected>🌞 Tarde</option>
+            <option value="noche">🌙 Noche</option>
+            <option value="todo-dia">📅 Todo el día</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label>📅 Fecha</label>
+          <input type="date" id="dateSelect" class="full" />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label>📍 Lugar</label>
+          <select id="locationSelect" class="full">
+            <option value="mi-casa">🏠 Mi casa</option>
+            <option value="tu-casa">🏡 Tu casa</option>
+            <option value="afuera" selected>🌍 Saliendo</option>
+            <option value="online">💻 Online</option>
+          </select>
+        </div>
+
+        <div class="category" id="categories">
+          <button class="cat-btn active" data-category="all">Todas</button>
+          <button class="cat-btn" data-category="comunicacion">Comunicar</button>
+          <button class="cat-btn" data-category="actividades">Actividades</button>
+          <button class="cat-btn" data-category="crecimiento">Crecer</button>
+          <button class="cat-btn" data-category="sorpresas">Sorpresas</button>
+        </div>
+
+        <div class="instruction" id="instructionText">Selecciona las actividades que más te gusten (recomiendo 3-5):</div>
+        <div class="grid" id="grid"></div>
+
+        <div style="margin: 16px 0;">
+          <label>💡 Idea personalizada (opcional)</label>
+          <input type="text" id="myIdea" placeholder="Escribe algo especial que quieras hacer..." />
+        </div>
+
+        <div style="display: flex; gap: 12px; margin: 20px 0;">
+          <button class="btn btn-primary full" id="generateBtn">🎲 Generar Plan de Cita</button>
+        </div>
+      </div>
+
+      <div class="section" id="planSection" style="display: none;">
+        <label>📱 Tu Plan de Cita Personalizado</label>
+        <textarea id="planOutput" readonly></textarea>
+
+        <div style="margin: 16px 0;">
+          <label>📞 Contacto (WhatsApp o Gmail)</label>
+          <input type="text" id="contactInput" placeholder="Ej: +56912345678 o michael@gmail.com" />
+        </div>
+
+        <div style="margin: 24px 0 16px;">
+          <button class="btn btn-primary full" id="sendProposalBtn">💕 Enviar Propuesta de Cita</button>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-secondary" id="copyBtn">📋 Copiar</button>
+          <button class="btn btn-secondary" id="calendarBtn">📅 Crear Evento</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // Variables globales
+    const allIdeas = {
+      comunicacion: [
+        { icon: '☕', text: 'Café y charla profunda: elegir un tema importante para conversar tranquilos' },
+        { icon: '�', text: 'Escribirse cartas cortas sobre algo que queremos lograr juntos este mes' },
+        { icon: '📞', text: 'Llamada nocturna de 30 min solo para contarnos el día sin distracciones' },
+        { icon: '❓', text: 'Juego de preguntas random: usar app de preguntas para parejas' },
+        { icon: '🌟', text: 'Sesión de "sueños": conversar sobre planes a futuro mientras caminamos' },
+        { icon: '📝', text: 'Intercambiar lista de "5 cosas que me gustan de ti esta semana"' },
+        { icon: '🎬', text: 'Conversar sobre una película/serie que nos haya marcado' },
+        { icon: '�', text: 'Sesión honesta: hablar sobre algo que queremos mejorar en la relación' }
+      ],
+      actividades: [
+        { icon: '�', text: 'Ir al cine a ver algo que los dos queramos + helado después para comentar' },
+        { icon: '🚴', text: 'Salir en bici por alguna ciclovía de Santiago (Maipú, Las Condes, etc)' },
+        { icon: '💻', text: 'Hackathon mini: trabajar juntos en un proyecto de código por diversión' },
+        { icon: '🗺️', text: 'Explorar un barrio de Santiago que ninguno conoce bien (Ñuñoa, Providencia)' },
+        { icon: '🎮', text: 'Ir a algún centro comercial a "viciar" videojuegos en los arcade' },
+        { icon: '�', text: 'Picnic en algún parque (Forestal, Bicentenario, O\'Higgins)' },
+        { icon: '�', text: 'Cocinar algo juntos en casa de uno (pero receta nueva que nunca hayamos hecho)' },
+        { icon: '📚', text: 'Ir a librerías grandes (Antártica, Feria del Libro) a curiosear y comprarse algo' }
+      ],
+      crecimiento: [
+        { icon: '✈️', text: 'Planificar juntos un viaje corto fuera de Santiago (Valparaíso, Cajón del Maipo)' },
+        { icon: '🎓', text: 'Tomar un curso online juntos sobre algo que les interese (programación, diseño)' },
+        { icon: '�', text: 'Hacer ejercicio juntos: ir al gym, correr, o clase de yoga' },
+        { icon: '�️', text: 'Visitar un museo de Santiago que ninguno haya ido (Bellas Artes, Ciencia y Tecnología)' },
+        { icon: '�️', text: 'Probar un restaurant de comida internacional que nunca hayamos probado' },
+        { icon: '📊', text: 'Sesión de planificación: organizar metas personales y como pareja para los próximos 3 meses' },
+        { icon: '🎯', text: 'Aprender algo nuevo viendo tutoriales de YouTube (instrumentos, baile, habilidad)' },
+        { icon: '�', text: 'Voluntariado juntos por medio día (hay hartas opciones en Santiago)' }
+      ],
+      sorpresas: [
+        { icon: '🎁', text: 'Día sorpresa: uno planifica todo el día para el otro sin decir qué harán' },
+        { icon: '�️', text: 'Intercambio de "misiones semanales": darse desafíos divertidos mutuamente' },
+        { icon: '�', text: 'Crear una cápsula del tiempo digital con fotos y mensajes para abrir en 6 meses' },
+        { icon: '🎯', text: 'Competir en algo random: mini golf, bowling, pool, videojuegos' },
+        { icon: '📷', text: 'Hacer un photoshoot temático por Santiago con outfits coordinados' },
+        { icon: '⌨️', text: 'Escribir código juntos para crear algo útil y tonto (app, juego, bot)' },
+        { icon: '📺', text: 'Maratón de serie nueva que ambos queramos ver + comida delivery' },
+        { icon: '�', text: 'Intercambio de playlists: crear listas de música para el otro' }
+      ]
+    };
+
+    const allIdeasArray = Object.values(allIdeas).flat();
+    let selectedIdeas = [];
+    let currentCategory = 'all';
+    let pressTimer;
+
+    // Referencias DOM
+    const categories = document.getElementById('categories');
+    const grid = document.getElementById('grid');
+    const instructionText = document.getElementById('instructionText');
+    const generateBtn = document.getElementById('generateBtn');
+    const planOutput = document.getElementById('planOutput');
+    const planSection = document.getElementById('planSection');
+    const copyBtn = document.getElementById('copyBtn');
+    const sendProposalBtn = document.getElementById('sendProposalBtn');
+    const calendarBtn = document.getElementById('calendarBtn');
+    const moodSelect = document.getElementById('moodSelect');
+    const timeSelect = document.getElementById('timeSelect');
+    const dateSelect = document.getElementById('dateSelect');
+    const locationSelect = document.getElementById('locationSelect');
+    const myIdea = document.getElementById('myIdea');
+    const contactInput = document.getElementById('contactInput');
+    const toast = document.getElementById('toast');
+    const holdBtn = document.getElementById('holdBtn');
+    const progress = document.getElementById('progress');
+    const progressFill = document.getElementById('progressFill');
+    const secret = document.getElementById('secret');
+
+    // Easter egg
+    function startPress() {
+      progress.style.display = 'block';
+      let width = 0;
+      pressTimer = setInterval(() => {
+        width += 2;
+        progressFill.style.width = width + '%';
+        if (width >= 100) {
+          clearInterval(pressTimer);
+          secret.style.display = 'block';
+          holdBtn.textContent = '¡Mensaje secreto revelado! 💖';
+          progress.style.display = 'none';
+          setTimeout(() => {
+            progressFill.style.width = '0%';
+          }, 1000);
+        }
+      }, 50);
+    }
+    
+    function cancelPress() {
+      clearInterval(pressTimer);
+      if (secret.style.display !== 'block') {
+        holdBtn.textContent = 'Mantén presionado 2 segundos ❤️';
+        progressFill.style.width = '0%';
+      }
+    }
+    
+    holdBtn.addEventListener('mousedown', startPress);
+    holdBtn.addEventListener('touchstart', startPress);
+    holdBtn.addEventListener('mouseup', cancelPress);
+    holdBtn.addEventListener('touchend', cancelPress);
+    holdBtn.addEventListener('mouseleave', cancelPress);
+
+    // Manejo de categorías
+    categories.addEventListener('click', (e) => {
+      if (e.target.classList.contains('cat-btn')) {
+        categories.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        currentCategory = e.target.dataset.category;
+        renderIdeas();
+        updateInstructionText();
+      }
+    });
+
+    // Renderizar ideas según categoría
+    function renderIdeas() {
+      grid.innerHTML = '';
+      const ideasToShow = currentCategory === 'all' ? allIdeasArray : allIdeas[currentCategory] || [];
+      
+      ideasToShow.forEach((idea, index) => {
+        const chip = document.createElement('label');
+        chip.className = 'chip';
+        chip.innerHTML = `
+          <input type="checkbox" value="${idea.text}">
+          <span class="icon">${idea.icon}</span>
+          <span class="chip-text">${idea.text}</span>
+        `;
+        
+        chip.addEventListener('click', () => {
+          const input = chip.querySelector('input');
+          input.checked = !input.checked;
+          chip.classList.toggle('active', input.checked);
+          updateSelectedIdeas();
+        });
+        
+        grid.appendChild(chip);
+      });
+    }
+
+    function updateSelectedIdeas() {
+      selectedIdeas = Array.from(grid.querySelectorAll('input:checked')).map(input => input.value);
+    }
+
+    function updateInstructionText() {
+      const categoryNames = {
+        all: 'Selecciona las actividades que más te gusten',
+        comunicacion: 'Actividades para conectar y comunicarnos mejor',
+        actividades: 'Cosas divertidas para hacer juntos',
+        crecimiento: 'Actividades para crecer como pareja', 
+        sorpresas: 'Ideas para sorprendernos mutuamente'
+      };
+      instructionText.textContent = categoryNames[currentCategory] + ' (recomiendo 3-5):';
+    }
+
+    // Generar plan
+    generateBtn.addEventListener('click', generateDatePlan);
+    
+    function generateDatePlan() {
+      let ideasToUse = [...selectedIdeas];
+      
+      // Agregar idea personalizada si existe
+      const customText = myIdea.value.trim();
+      
+      if (customText) {
+        ideasToUse.unshift(`💡 Idea especial: ${customText}`);
+      }
+      
+      // Si no hay ideas seleccionadas, tomar algunas aleatorias
+      if (ideasToUse.length === 0) {
+        ideasToUse = getRandomIdeas(3);
+      }
+      
+      // Limitar ideas
+      ideasToUse = ideasToUse.slice(0, 5);
+      
+      const mood = moodSelect.value;
+      const selectedDate = dateSelect.value;
+      const selectedTime = timeSelect.value;
+      const selectedLocation = locationSelect.value;
+      
+      const moodEmojis = {
+        romantico: '💕',
+        divertido: '😄', 
+        relajado: '😌',
+        aventurero: '🗺️',
+        productivo: '💻'
+      };
+      
+      const timeTexts = {
+        mañana: 'en la mañana 🌅',
+        tarde: 'en la tarde 🌞',
+        noche: 'en la noche 🌙',
+        'todo-dia': 'todo el día 📅'
+      };
+      
+      const locationTexts = {
+        'mi-casa': 'en mi casa 🏠',
+        'tu-casa': 'en tu casa 🏡', 
+        'afuera': 'saliendo por ahí 🌍',
+        'online': 'online/virtual 💻'
+      };
+      
+      // Formatear fecha
+      let dateText = '';
+      if (selectedDate) {
+        const date = new Date(selectedDate);
+        const options = { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        };
+        dateText = date.toLocaleDateString('es-ES', options);
+      } else {
+        dateText = 'cuando nos podamos juntar';
+      }
+      
+      let plan = `📱 *PLAN DE CITA ${moodEmojis[mood]}*\n`;
+      plan += `_Desde nuestra App MJZV_\n\n`;
+      
+      plan += `📅 *Cuándo:* ${dateText}\n`;
+      plan += `⏰ *Horario:* ${timeTexts[selectedTime]}\n`;
+      plan += `📍 *Dónde:* ${locationTexts[selectedLocation]}\n\n`;
+      
+      plan += `*Ideas para hacer:*\n`;
+      ideasToUse.forEach((idea, index) => {
+        plan += `${index + 1}. ${idea}\n`;
+      });
+      
+      plan += `\n💡 *Backup:* Si algo no resulta, podemos improvisar con una película y comida a domicilio\n\n`;
+      plan += `📱 _Generado desde App MJZV_`;
+      
+      planOutput.value = plan;
+      planSection.style.display = 'block';
+      
+      // Scroll suave hacia el plan
+      planSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function getRandomIdeas(count) {
+      const shuffled = [...allIdeasArray].sort(() => Math.random() - 0.5);
+      return shuffled.slice(0, count).map(idea => idea.text);
+    }
+
+    // Copiar plan
+    copyBtn.addEventListener('click', async () => {
+      const planText = planOutput.value;
+      if (!planText) {
+        showToast('¡Primero genera un plan!');
+        return;
+      }
+      
+      try {
+        await navigator.clipboard.writeText(planText);
+        showToast('¡Plan copiado! Ahora puedes enviarlo por WhatsApp 💖');
+      } catch (err) {
+        showToast('No se pudo copiar. Selecciona el texto manualmente.');
+      }
+    });
+
+    // Enviar propuesta de cita (WhatsApp o Gmail automáticamente)
+    sendProposalBtn.addEventListener('click', () => {
+      const planText = planOutput.value;
+      if (!planText) {
+        showToast('¡Primero genera un plan!');
+        return;
+      }
+
+      const contact = contactInput.value.trim();
+      if (!contact) {
+        showToast('¡Ingresa un número de WhatsApp o email de Gmail!');
+        return;
+      }
+
+      // Detectar si es email o número
+      const isEmail = contact.includes('@');
+      
+      if (isEmail) {
+        // Enviar por Gmail
+        const subject = encodeURIComponent('💕 Propuesta de Cita - App MJZV');
+        const body = encodeURIComponent(planText);
+        const gmailURL = `https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(contact)}&su=${subject}&body=${body}`;
+        
+        window.open(gmailURL, '_blank');
+        showToast(`📧 Abriendo Gmail para enviar a ${contact}...`);
+      } else {
+        // Enviar por WhatsApp
+        const cleanPhone = contact.replace(/[\s\-\(\)]/g, '');
+        const fullPhone = cleanPhone.startsWith('+') ? cleanPhone : `+56${cleanPhone}`;
+        const whatsappURL = `https://api.whatsapp.com/send?phone=${fullPhone}&text=${encodeURIComponent(planText)}`;
+        
+        window.open(whatsappURL, '_blank');
+        showToast(`📱 Abriendo WhatsApp para enviar a ${contact}...`);
+      }
+    });
+
+    // Crear evento en Google Calendar
+    calendarBtn.addEventListener('click', () => {
+      if (!planOutput.value) {
+        showToast('¡Primero genera un plan!');
+        return;
+      }
+
+      const selectedDate = dateSelect.value;
+      if (!selectedDate) {
+        showToast('¡Selecciona una fecha primero!');
+        return;
+      }
+
+      // Crear fecha y hora del evento
+      const eventDate = new Date(selectedDate);
+      const timeMapping = {
+        'mañana': { hour: 10, minute: 0 },
+        'tarde': { hour: 15, minute: 0 },
+        'noche': { hour: 19, minute: 0 },
+        'todo-dia': { hour: 9, minute: 0, allDay: true }
+      };
+      
+      const timeInfo = timeMapping[timeSelect.value] || timeMapping.tarde;
+      eventDate.setHours(timeInfo.hour, timeInfo.minute, 0, 0);
+      
+      // Formatear fechas para Google Calendar
+      const startDate = eventDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+      const endDate = new Date(eventDate.getTime() + (timeInfo.allDay ? 24*60*60*1000 : 2*60*60*1000));
+      const endDateStr = endDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+
+      const title = `Cita MJZV - ${moodSelect.options[moodSelect.selectedIndex].text}`;
+      const location = locationSelect.options[locationSelect.selectedIndex].text;
+      const details = planOutput.value.replace(/\*/g, '').replace(/_/g, '');
+
+      // URL de Google Calendar
+      const calendarURL = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate}/${endDateStr}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
+      
+      // Si el contacto es email, agregarlo como invitado
+      const contact = contactInput.value.trim();
+      let finalURL = calendarURL;
+      if (contact && contact.includes('@')) {
+        finalURL += `&add=${encodeURIComponent(contact)}`;
+        showToast('📅 Creando evento e invitando a ' + contact + '...');
+      } else {
+        showToast('📅 Creando evento en tu Google Calendar...');
+      }
+
+      window.open(finalURL, '_blank');
+    });
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Inicialización
+    renderIdeas();
+    updateInstructionText();
+    
+    // Establecer fecha de mañana por defecto
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    dateSelect.value = tomorrow.toISOString().split('T')[0];
+  </script>
+</body>
+</html>
