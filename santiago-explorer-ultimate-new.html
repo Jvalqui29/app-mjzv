@@ -1,0 +1,2208 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>� Together App - Experiencias & Aventuras</title>
+
+    <style>
+      :root {
+        /* Paleta súper vibrante y profesional */
+        --bg: #0b0f14;
+        --card: #0f1622;
+        --muted: #93a0b4;
+        --txt: #eaf2ff;
+        --border: #1f2a3a;
+        --border2: #2a3a52;
+        --accent: #00e0b8;
+        --accent2: #7c5cff;
+        --accent-soft: rgba(0, 224, 184, 0.12);
+        --ok: #2ee59d;
+        --warn: #ffcf5c;
+        --danger: #ff6b6b;
+        --radius: 14px;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.4);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font: 14px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+          Roboto, Inter, Arial;
+        background: radial-gradient(
+            900px 900px at 110% -10%,
+            rgba(124, 92, 255, 0.15),
+            transparent
+          ),
+          radial-gradient(
+            800px 800px at -50% 150%,
+            rgba(0, 224, 184, 0.08),
+            transparent
+          ),
+          var(--bg);
+        color: var(--txt);
+        min-height: 100vh;
+      }
+
+      /* ===== HEADER ÉPICO ===== */
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(11, 15, 20, 0.85);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        font-size: 18px;
+        color: var(--txt);
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+
+      .logo:hover {
+        transform: scale(1.02);
+      }
+
+      .logo-badge {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        background: linear-gradient(
+          135deg,
+          #1e3a8a,
+          #3b82f6,
+          #06b6d4,
+          #0891b2,
+          #0f766e
+        );
+        background-size: 300% 300%;
+        animation: logoShimmer 3s ease-in-out infinite;
+        display: grid;
+        place-items: center;
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 700;
+        font-family: "Arial", sans-serif;
+        letter-spacing: -0.5px;
+        box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3),
+          0 0 20px rgba(59, 130, 246, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .logo-badge::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.4),
+          transparent,
+          rgba(255, 255, 255, 0.2)
+        );
+        border-radius: 14px;
+        animation: logoGlow 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes logoShimmer {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      @keyframes logoGlow {
+        0% {
+          opacity: 0.3;
+        }
+        100% {
+          opacity: 0.7;
+        }
+      }
+
+      .logo-text {
+        background: linear-gradient(135deg, #1e3a8a, #3b82f6, #06b6d4, #0891b2);
+        background-size: 300% 300%;
+        animation: textShimmer 4s ease-in-out infinite;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 600;
+        text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+      }
+
+      @keyframes textShimmer {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .search-container {
+        flex: 1;
+        max-width: 480px;
+        position: relative;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 12px 50px 12px 16px;
+        border: 2px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--card);
+        color: var(--txt);
+        font-size: 14px;
+        outline: none;
+        transition: all 0.2s ease;
+      }
+
+      .search-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+      }
+
+      .search-btn {
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 8px 12px;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        border: none;
+        border-radius: 10px;
+        color: #000;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .search-btn:hover {
+        transform: translateY(-50%) scale(1.05);
+      }
+
+      /* ===== FILTERS CONTAINER ===== */
+      .filters-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px 16px 12px;
+      }
+
+      .chips-container {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+
+      .chip {
+        padding: 10px 16px;
+        border-radius: 25px;
+        border: 2px solid var(--border);
+        background: var(--card);
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+      }
+
+      .chip.activo {
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        border-color: var(--accent);
+        color: #000;
+        transform: scale(1.05);
+      }
+
+      .chip:hover:not(.activo) {
+        border-color: var(--border2);
+        background: rgba(147, 160, 180, 0.05);
+      }
+
+      /* ===== MAIN CONTENT ===== */
+      .main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 16px 40px;
+      }
+
+      .content-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .results-info {
+        font-size: 16px;
+        color: var(--muted);
+      }
+
+      .results-count {
+        font-weight: 700;
+        color: var(--accent);
+        font-size: 18px;
+      }
+
+      .sort-area {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .sort-select {
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--card);
+        color: var(--txt);
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      /* ===== EXPERIENCES GRID ===== */
+      .experiences-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 24px;
+        margin-top: 20px;
+      }
+
+      .experience-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .experience-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--border2);
+      }
+
+      .card-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .experience-card:hover .card-image {
+        transform: scale(1.1);
+      }
+
+      .image-container {
+        position: relative;
+        overflow: hidden;
+        height: 200px;
+      }
+
+      .badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 4px 12px;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: #000;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 20px;
+        text-transform: uppercase;
+      }
+
+      .favorite-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.6);
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .favorite-btn:hover {
+        background: rgba(0, 0, 0, 0.8);
+        transform: scale(1.1);
+      }
+
+      .favorite-btn.favorito {
+        background: var(--accent);
+        color: #000;
+      }
+
+      .card-content {
+        padding: 20px;
+      }
+
+      .card-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--txt);
+        margin-bottom: 8px;
+        line-height: 1.3;
+      }
+
+      .card-location {
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .card-description {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 16px;
+      }
+
+      .card-stats {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .rating {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .stars {
+        color: #ffd700;
+        font-size: 14px;
+      }
+
+      .rating-text {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .duration {
+        font-size: 13px;
+        color: var(--muted);
+        background: rgba(147, 160, 180, 0.1);
+        padding: 4px 8px;
+        border-radius: 6px;
+      }
+
+      .card-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .btn {
+        flex: 1;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: center;
+      }
+
+      /* REGLA SÚPER ESPECÍFICA PARA BOTÓN AZUL */
+      .btn-primary,
+      .btn.btn-primary,
+      .card-actions .btn-primary,
+      .card-actions .btn.btn-primary,
+      button.btn.btn-primary,
+      .experiencia-card .card-actions button.btn.btn-primary {
+        background: linear-gradient(135deg, #00e0b8, #7c5cff) !important;
+        color: white !important;
+        border: none !important;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 224, 184, 0.3);
+      }
+
+      .btn-secondary {
+        background: var(--border);
+        color: var(--txt);
+        border: 1px solid var(--border2);
+      }
+
+      .btn-secondary:hover {
+        background: var(--border2);
+      }
+
+      /* ===== FAB ===== */
+      .fab {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        border: none;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: var(--shadow);
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .fab:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 30px rgba(255, 107, 107, 0.4);
+      }
+
+      /* ===== SIDEBAR CITAS ===== */
+      .citas-sidebar {
+        position: fixed;
+        top: 0;
+        right: -400px;
+        width: 400px;
+        height: 100vh;
+        background: var(--card);
+        border-left: 1px solid var(--border);
+        transition: right 0.3s ease;
+        z-index: 1001;
+        overflow-y: auto;
+      }
+
+      .citas-sidebar.open {
+        right: 0;
+      }
+
+      .sidebar-header {
+        padding: 20px;
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        background: var(--card);
+      }
+
+      .experiencia-cita {
+        transition: all 0.2s ease !important;
+      }
+
+      .experiencia-cita:hover {
+        border-color: var(--accent) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 224, 184, 0.15);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .sidebar-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .sidebar-subtitle {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .close-sidebar {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--border);
+        border: none;
+        color: var(--txt);
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .close-sidebar:hover {
+        background: var(--border2);
+      }
+
+      .sidebar-content {
+        padding: 20px;
+      }
+
+      /* ===== LOADING STATE ===== */
+      .loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--border);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 1s ease-in-out infinite;
+        margin-bottom: 20px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 768px) {
+        .nav-container {
+          flex-direction: column;
+          gap: 16px;
+          padding: 16px;
+        }
+
+        .search-container {
+          max-width: 100%;
+        }
+
+        .experiences-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+
+        .content-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        .citas-sidebar {
+          width: 100%;
+          right: -100%;
+        }
+
+        .chips-container {
+          gap: 8px;
+        }
+
+        .chip {
+          font-size: 12px;
+          padding: 8px 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .filters-container {
+          padding: 16px 12px 8px;
+        }
+
+        .main {
+          padding: 0 12px 40px;
+        }
+
+        .card-content {
+          padding: 16px;
+        }
+
+        .fab {
+          bottom: 20px;
+          right: 20px;
+          width: 56px;
+          height: 56px;
+          font-size: 22px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="nav-container">
+        <a href="#" class="logo">
+          <div class="logo-badge">MJ</div>
+          <span class="logo-text">Together App</span>
+        </a>
+
+        <form class="search-container" onsubmit="buscar(event)">
+          <input
+            type="text"
+            class="search-input"
+            id="searchQuery"
+            placeholder="Buscar experiencias en Santiago..."
+            value="Santiago"
+          />
+          <button type="submit" class="search-btn">🔍</button>
+        </form>
+      </div>
+    </header>
+
+    <!-- FILTERS -->
+    <div class="filters-container">
+      <div class="chips-container" id="chipsContainer">
+        <!-- Se llena dinámicamente -->
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+      <div class="content-header">
+        <div class="results-info">
+          <span class="results-count" id="resultsCount">0</span> experiencias
+          increíbles en
+          <strong id="locationLabel">Santiago</strong>
+        </div>
+
+        <div class="sort-area">
+          <label for="sortBy">Ordenar por:</label>
+          <select class="sort-select" id="sortBy">
+            <option value="recomendado">🎯 Recomendado</option>
+            <option value="rating">⭐ Mejor valorado</option>
+            <option value="duracion">⏱️ Duración</option>
+            <option value="dificultad">💪 Dificultad</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- GRID DE EXPERIENCIAS ÉPICAS -->
+      <div class="experiences-grid" id="experienciasGrid">
+        <!-- Se llena dinámicamente -->
+      </div>
+
+      <!-- LOADING STATE -->
+      <div class="loading" id="loadingState" style="display: none">
+        <div class="spinner"></div>
+        <p>Descubriendo experiencias increíbles...</p>
+      </div>
+    </main>
+
+    <!-- SIDEBAR CITAS -->
+    <aside class="citas-sidebar" id="citasSidebar">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">💕 Planificador de Citas</h2>
+        <p class="sidebar-subtitle">Genera tu plan perfecto!!</p>
+        <button class="close-sidebar" onclick="cerrarCitas()">×</button>
+      </div>
+      <div class="sidebar-content" id="citasContent">
+        <!-- Contenido del planificador se agregará aquí -->
+      </div>
+    </aside>
+
+    <!-- FAB -->
+    <button
+      class="fab"
+      onclick="abrirCitas()"
+      title="Planear una cita romántica"
+    >
+      💕
+    </button>
+
+    <script>
+      // ===== PANORAMAS REALES DE SANTIAGO (DESDE JSON CON IMÁGENES HD) =====
+      const EXPERIENCIAS_JSON = {
+        actividades_aire_libre: [
+          {
+            id: "parque-bicentenario",
+            title: "Parque Bicentenario + Laguna",
+            city: "Vitacura",
+            region: "Metropolitana",
+            image:
+              "https://static.wixstatic.com/media/1296dd_6cde2ddec8454f6e8c243b10891881ac~mv2.jpg/v1/fill/w_740,h_493,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1296dd_6cde2ddec8454f6e8c243b10891881ac~mv2.jpg",
+            description: "Parque moderno con laguna y aves.",
+          },
+          {
+            id: "parque-metropolitano",
+            title: "Parque Metropolitano (San Cristóbal)",
+            city: "Santiago",
+            region: "Metropolitana",
+            image:
+              "https://applications-media.feverup.com/image/upload/f_auto/fever2/plan/photo/cbd2d324-0973-11f0-95ec-f2f7ddde177a.jpg",
+            description: "Senderos, miradores y teleférico.",
+          },
+          {
+            id: "parque-mahuida",
+            title: "Parque Mahuida",
+            city: "La Reina",
+            region: "Metropolitana",
+            image:
+              "https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=80",
+            description: "Áreas de picnic y canopy.",
+          },
+          {
+            id: "aguas-de-ramon",
+            title: "Parque Aguas de Ramón",
+            city: "La Reina",
+            region: "Metropolitana",
+            image:
+              "https://cdn.andeshandbook.org/media/route_gallery/1454617012336551671.jpg",
+            description: "Sendero al Salto del Apoquindo.",
+          },
+          {
+            id: "parque-nunoa",
+            title: "Parque Juan XXIII / Ñuñoa",
+            city: "Ñuñoa",
+            region: "Metropolitana",
+            image:
+              "https://http2.mlstatic.com/D_NQ_NP_2X_672569-MLC54486145414_032023-N-depto-304-pedro-torres-nororiente-2d2b-cocina-indep.webp",
+            description: "Verde para trotar y picnic.",
+          },
+          {
+            id: "salto-apoquindo",
+            title: "Salto del Apoquindo",
+            city: "La Reina",
+            region: "Metropolitana",
+            image:
+              "https://www.wikiexplora.com/images/0/05/Salto_del_Apoquindo.JPG",
+            description: "Cascada en la precordillera.",
+          },
+          {
+            id: "cajon-yeso",
+            title: "Embalse El Yeso",
+            city: "San José de Maipo",
+            region: "Metropolitana",
+            image:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjblp_FETSY-o6ohDbRv8QprTgI0Jw9R40KQ&s",
+            description: "Aguas turquesa en la cordillera.",
+          },
+          {
+            id: "termas-colina",
+            title: "Termas de Colina",
+            city: "Cajón del Maipo",
+            region: "Metropolitana",
+            image:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSirAJrp6GGEnOppqu5KiCBdCgKJLfjgfU7sw&s0",
+            description: "Pozones naturales de agua caliente.",
+          },
+        ],
+        trekking: [
+          {
+            id: "manquehue",
+            title: "Cerro Manquehue",
+            city: "Las Condes",
+            region: "Metropolitana",
+            image:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwVj8QrWLeX-qd02K5I5o5JE_NXS0z62Fnwg&s",
+            description: "Panorámica 360° sobre Santiago.",
+          },
+          {
+            id: "manquehuito",
+            title: "Cerro Manquehuito",
+            city: "Vitacura",
+            region: "Metropolitana",
+            image:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrTLt8M7Tz72YJ1B1rTYt9fqamO2x59fJ39g&s",
+            description: "Ascenso corto, vista rápida.",
+          },
+          {
+            id: "pochoco",
+            title: "Cerro Pochoco",
+            city: "Lo Barnechea",
+            region: "Metropolitana",
+            image:
+              "https://cdn.andeshandbook.org/media/route_gallery/thumb600x400/2172005121151705.jpg",
+            description: "Clásico de tarde con mirador.",
+          },
+          {
+            id: "provincia",
+            title: "Cerro Provincia",
+            city: "Lo Barnechea",
+            region: "Metropolitana",
+            image:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbvYUO8_0kL7E5_xhm8eJhkv2Q9l8Ar1BdxQ&s",
+          },
+          {
+            id: "san-ramon",
+            title: "Cerro San Ramón",
+            city: "La Reina",
+            region: "Metropolitana",
+            image:
+              "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80",
+            description: "Alta exigencia y largas horas.",
+          },
+          {
+            id: "carbon",
+            title: "Cerro Carbón",
+            city: "Vitacura",
+            region: "Metropolitana",
+            image:
+              "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=80",
+            description: "Rápido, ideal para comenzar.",
+          },
+          {
+            id: "condores",
+            title: "Mirador de los Cóndores",
+            city: "Cajón del Maipo",
+            region: "Metropolitana",
+            image:
+              "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=80",
+            description: "Ruta clásica con vistas al Maipo.",
+          },
+        ],
+        gastronomia: [
+          {
+            id: "mercado-central",
+            title: "Mercado Central",
+            city: "Santiago",
+            region: "Metropolitana",
+            image:
+              "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200&q=80",
+            description: "Mariscos y cocina chilena clásica.",
+          },
+          {
+            id: "la-vega",
+            title: "La Vega Central",
+            city: "Recoleta",
+            region: "Metropolitana",
+            image:
+              "https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=1200&q=80",
+            description: "Frutas, jugos y cocinerías.",
+          },
+          {
+            id: "barrio-italia-food",
+            title: "Barrio Italia (restaurantes)",
+            city: "Providencia/Ñuñoa",
+            region: "Metropolitana",
+            image:
+              "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&q=80",
+            description: "Cafés y cocina de autor.",
+          },
+          {
+            id: "fuente-alemana",
+            title: "Fuente Alemana",
+            city: "Santiago",
+            region: "Metropolitana",
+            image:
+              "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200&q=80",
+            description: "Sanguchería histórica.",
+          },
+          {
+            id: "liguria",
+            title: "Liguria",
+            city: "Providencia",
+            region: "Metropolitana",
+            image:
+              "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=1200&q=80",
+            description: "Cocina chilena y bar icónico.",
+          },
+          {
+            id: "galindo",
+            title: "Galindo",
+            city: "Bellavista",
+            region: "Metropolitana",
+            image:
+              "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80",
+            description: "Chileno de barrio.",
+          },
+        ],
+        historia_cultura: [
+          {
+            id: "museo-bellas-artes",
+            title: "Museo Nacional de Bellas Artes",
+            city: "Santiago",
+            region: "Metropolitana",
+            image:
+              "https://ohstgo.cl/wp-content/uploads/2023/07/SANTIAGO_MNBA_AUTOR-Marcos-Mendizabal_1-1035x690-1-1035x687.jpg",
+            description: "Arte chileno y universal.",
+          },
+          {
+            id: "precolombino",
+            title: "Museo Chileno de Arte Precolombino",
+            city: "Santiago",
+            region: "Metropolitana",
+            image:
+              "https://chileprecolombino.cl/wp/wp-content/uploads/2014/05/chile-antes-de-chile-01-460x220.jpg",
+            description: "Colecciones de América prehispánica.",
+          },
+          {
+            id: "la-moneda",
+            title: "Palacio de La Moneda + CCLM",
+            city: "Santiago",
+            region: "Metropolitana",
+            image:
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Palacio_de_La_Moneda_-_miguelreflex.jpg/1024px-Palacio_de_La_Moneda_-_miguelreflex.jpg",
+            description: "Sede de gobierno y centro cultural.",
+          },
+          {
+            id: "cerro-santa-lucia-hist",
+            title: "Cerro Santa Lucía",
+            city: "Santiago",
+            region: "Metropolitana",
+            image:
+              "https://www.monumentos.gob.cl/sites/default/files/styles/16x9_grande/public/image-monumentos/mh_00372_2017_av_001.jpg?h=920929c4&itok=tRpOn53z",
+            description: "Fundación de la ciudad.",
+          },
+        ],
+        arte_musica_cine: [
+          {
+            id: "gam",
+            title: "GAM – Gabriela Mistral",
+            city: "Santiago",
+            region: "Metropolitana",
+            image:
+              "https://images.unsplash.com/photo-1516849841032-87cbac4d88f7?w=1200&q=80",
+            description: "Teatro, danza y exposiciones.",
+          },
+          {
+            id: "matucana100",
+            title: "Matucana 100",
+            city: "Estación Central",
+            region: "Metropolitana",
+            image:
+              "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80",
+            description: "Artes escénicas y música.",
+          },
+          {
+            id: "lastarria-galerias",
+            title: "Galerías Barrio Lastarria",
+            city: "Santiago",
+            region: "Metropolitana",
+            image:
+              "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80",
+            description: "Arte independiente.",
+          },
+        ],
+        familiar: [
+          {
+            id: "fantasilandia",
+            title: "Fantasilandia",
+            city: "Santiago",
+            region: "Metropolitana",
+            image:
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Fantasilandia_2016.jpg/330px-Fantasilandia_2016.jpg",
+            description: "Parque de diversiones clásico.",
+          },
+          {
+            id: "mim",
+            title: "Museo Interactivo Mirador",
+            city: "La Granja",
+            region: "Metropolitana",
+            image:
+              "https://upload.wikimedia.org/wikipedia/commons/c/c1/Museo_Interactivo_Mirador-01.jpg",
+            description: "Ciencia para niños y grandes.",
+          },
+          {
+            id: "sky-costanera",
+            title: "Templo-bahai",
+            city: "Peñalolen",
+            region: "Metropolitana",
+            image:
+              "https://media.tacdn.com/media/attractions-splice-spp-674x446/12/2b/fc/d9.jpg",
+            description: "Mirador 300m de altura.",
+          },
+          {
+            id: "zoo-nacional",
+            title: "Zoológico Nacional",
+            city: "Providencia",
+            city: "Providencia",
+            region: "Metropolitana",
+            image:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjbp2O7CLfhlS_sDbNx2uHwndv7VYG0Z_Bng&s",
+            description: "Fauna y educación.",
+          },
+        ],
+      };
+
+      // Transformar JSON a formato compatible con imágenes HD
+      const EXPERIENCIAS = [
+        // Actividades al aire libre
+        ...EXPERIENCIAS_JSON.actividades_aire_libre.map((exp, index) => ({
+          id: exp.id,
+          title: exp.title,
+          ciudad: exp.city,
+          region: exp.region,
+          imagen: exp.image,
+          duracion: "3-6 horas",
+          rating: 4.3 + Math.random() * 0.7,
+          reviews: 500 + Math.floor(Math.random() * 2000),
+          categoria: ["actividades_aire_libre"],
+          dificultad: "Fácil",
+          badge: index === 0 ? "Popular" : undefined,
+          descripcion: exp.description,
+          coordenadas: [
+            -33.4 + Math.random() * 0.4,
+            -70.6 + Math.random() * 0.4,
+          ],
+        })),
+        // Trekking
+        ...EXPERIENCIAS_JSON.trekking.map((exp, index) => ({
+          id: exp.id,
+          title: exp.title,
+          ciudad: exp.city,
+          region: exp.region,
+          imagen: exp.image,
+          duracion:
+            index < 2 ? "2-4 horas" : index < 4 ? "4-6 horas" : "6-10 horas",
+          rating: 4.5 + Math.random() * 0.4,
+          reviews: 300 + Math.floor(Math.random() * 1500),
+          categoria: ["trekking"],
+          dificultad: index < 2 ? "Fácil" : index < 4 ? "Moderado" : "Difícil",
+          badge: exp.id === "san-ramon" ? "Desafío Extremo" : undefined,
+          descripcion: exp.description,
+          coordenadas: [
+            -33.3 + Math.random() * 0.3,
+            -70.5 + Math.random() * 0.3,
+          ],
+        })),
+        // Gastronomía
+        ...EXPERIENCIAS_JSON.gastronomia.map((exp, index) => ({
+          id: exp.id,
+          title: exp.title,
+          ciudad: exp.city,
+          region: exp.region,
+          imagen: exp.image,
+          duracion: "2-3 horas",
+          rating: 4.2 + Math.random() * 0.6,
+          reviews: 800 + Math.floor(Math.random() * 2500),
+          categoria: ["gastronomia"],
+          dificultad: "Fácil",
+          badge: exp.id === "mercado-central" ? "Imperdible" : undefined,
+          descripcion: exp.description,
+          coordenadas: [
+            -33.44 + Math.random() * 0.1,
+            -70.65 + Math.random() * 0.1,
+          ],
+        })),
+        // Historia y Cultura
+        ...EXPERIENCIAS_JSON.historia_cultura.map((exp, index) => ({
+          id: exp.id,
+          title: exp.title,
+          ciudad: exp.city,
+          region: exp.region,
+          imagen: exp.image,
+          duracion: "2-4 horas",
+          rating: 4.1 + Math.random() * 0.5,
+          reviews: 400 + Math.floor(Math.random() * 1800),
+          categoria: ["historia_cultura"],
+          dificultad: "Fácil",
+          badge: exp.id === "la-moneda" ? "Histórico" : undefined,
+          descripcion: exp.description,
+          coordenadas: [
+            -33.44 + Math.random() * 0.05,
+            -70.65 + Math.random() * 0.05,
+          ],
+        })),
+        // Arte, Música y Cine
+        ...EXPERIENCIAS_JSON.arte_musica_cine.map((exp, index) => ({
+          id: exp.id,
+          title: exp.title,
+          ciudad: exp.city,
+          region: exp.region,
+          imagen: exp.image,
+          duracion: "2-5 horas",
+          rating: 4.3 + Math.random() * 0.4,
+          reviews: 200 + Math.floor(Math.random() * 1200),
+          categoria: ["arte_musica_cine"],
+          dificultad: "Fácil",
+          badge: exp.id === "gam" ? "Cultural" : undefined,
+          descripcion: exp.description,
+          coordenadas: [
+            -33.43 + Math.random() * 0.08,
+            -70.64 + Math.random() * 0.08,
+          ],
+        })),
+        // Familiar
+        ...EXPERIENCIAS_JSON.familiar.map((exp, index) => ({
+          id: exp.id,
+          title: exp.title,
+          ciudad: exp.city,
+          region: exp.region,
+          imagen: exp.image,
+          duracion: "3-8 horas",
+          rating: 4.4 + Math.random() * 0.4,
+          reviews: 1000 + Math.floor(Math.random() * 3000),
+          categoria: ["familiar"],
+          dificultad: "Fácil",
+          badge: exp.id === "fantasilandia" ? "Familiar" : undefined,
+          descripcion: exp.description,
+          coordenadas: [
+            -33.42 + Math.random() * 0.1,
+            -70.62 + Math.random() * 0.1,
+          ],
+        })),
+      ];
+
+      // CHIPS DE FILTROS ACTUALIZADOS PARA NUEVAS CATEGORÍAS
+      const CHIPS_FILTROS = [
+        { id: "todos", label: "🌟 Todas las categorías", activo: true },
+        { id: "actividades_aire_libre", label: "🌳 Actividades al aire libre" },
+        { id: "trekking", label: "🥾 Trekking" },
+        { id: "gastronomia", label: "🍽️ Gastronomía" },
+        { id: "historia_cultura", label: "🏛️ Historia y Cultura" },
+        { id: "arte_musica_cine", label: "🎭 Arte, Música y Cine" },
+        { id: "familiar", label: "👨‍👩‍👧‍👦 Familiar" },
+      ];
+
+      // ===== ESTADO GLOBAL =====
+      let busquedaActual = "Santiago";
+      let filtrosActivos = new Set(["todos"]);
+      let ordenActual = "recomendado";
+      let favoritos = new Set(
+        JSON.parse(localStorage.getItem("mjzv_favoritos") || "[]")
+      );
+      let sidebarAbierto = false;
+      let planCitaActual = null;
+      let planCita = []; // Variable global para el nuevo planificador
+
+      // ===== REFS DOM =====
+      const searchQuery = document.getElementById("searchQuery");
+      const chipsContainer = document.getElementById("chipsContainer");
+      const experienciasGrid = document.getElementById("experienciasGrid");
+      const resultsCount = document.getElementById("resultsCount");
+      const locationLabel = document.getElementById("locationLabel");
+      const sortBy = document.getElementById("sortBy");
+      const citasSidebar = document.getElementById("citasSidebar");
+      const loadingState = document.getElementById("loadingState");
+
+      // ===== FUNCIONES PRINCIPALES =====
+      function buscar(event) {
+        event.preventDefault();
+        busquedaActual = searchQuery.value.trim() || "Santiago";
+        locationLabel.textContent = busquedaActual;
+        renderizar();
+      }
+
+      function toggleFiltro(filtroId) {
+        if (filtroId === "todos") {
+          filtrosActivos.clear();
+          filtrosActivos.add("todos");
+        } else {
+          filtrosActivos.delete("todos");
+          filtrosActivos.has(filtroId)
+            ? filtrosActivos.delete(filtroId)
+            : filtrosActivos.add(filtroId);
+
+          if (filtrosActivos.size === 0) {
+            filtrosActivos.add("todos");
+          }
+        }
+        renderChips();
+        renderizar();
+      }
+
+      function toggleFavorito(expId) {
+        favoritos.has(expId) ? favoritos.delete(expId) : favoritos.add(expId);
+        localStorage.setItem("mjzv_favoritos", JSON.stringify([...favoritos]));
+        renderizar();
+      }
+
+      function abrirCitas() {
+        sidebarAbierto = true;
+        citasSidebar.classList.add("open");
+        generarPlanificadorCitas();
+      }
+
+      function cerrarCitas() {
+        sidebarAbierto = false;
+        citasSidebar.classList.remove("open");
+      }
+
+      // ===== RENDERIZADO =====
+      function renderChips() {
+        chipsContainer.innerHTML = CHIPS_FILTROS.map(
+          (chip) => `
+        <button
+          class="chip ${filtrosActivos.has(chip.id) ? "activo" : ""}"
+          onclick="toggleFiltro('${chip.id}')"
+        >
+          ${chip.label}
+        </button>
+      `
+        ).join("");
+      }
+
+      function renderizar() {
+        let experienciasFiltradas = EXPERIENCIAS;
+
+        // Aplicar filtros
+        if (!filtrosActivos.has("todos")) {
+          experienciasFiltradas = experienciasFiltradas.filter((exp) =>
+            exp.categoria.some((cat) => filtrosActivos.has(cat))
+          );
+        }
+
+        // Ordenar
+        switch (ordenActual) {
+          case "rating":
+            experienciasFiltradas.sort((a, b) => b.rating - a.rating);
+            break;
+          case "duracion":
+            experienciasFiltradas.sort((a, b) =>
+              a.duracion.localeCompare(b.duracion)
+            );
+            break;
+          case "dificultad":
+            experienciasFiltradas.sort((a, b) =>
+              a.dificultad.localeCompare(b.dificultad)
+            );
+            break;
+          default:
+          // Ya están ordenadas por recomendación
+        }
+
+        // Renderizar resultados
+        resultsCount.textContent = experienciasFiltradas.length;
+
+        experienciasGrid.innerHTML = experienciasFiltradas
+          .map(
+            (exp) => `
+        <div class="experience-card" onclick="seleccionarExperiencia('${
+          exp.id
+        }')">
+          <div class="image-container">
+            <img class="card-image" src="${exp.imagen}" alt="${
+              exp.title
+            }" loading="lazy" />
+            ${exp.badge ? `<div class="badge">${exp.badge}</div>` : ""}
+            <button
+              class="favorite-btn ${favoritos.has(exp.id) ? "favorito" : ""}"
+              onclick="event.stopPropagation(); toggleFavorito('${exp.id}')"
+              title="Agregar a favoritos"
+            >
+              ${favoritos.has(exp.id) ? "❤️" : "🤍"}
+            </button>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">${exp.title}</h3>
+            <div class="card-location">
+              📍 ${exp.ciudad}, ${exp.region}
+            </div>
+            <p class="card-description">${exp.descripcion}</p>
+            <div class="card-stats">
+              <div class="rating">
+                <span class="stars">⭐</span>
+                <span class="rating-text">${exp.rating.toFixed(
+                  1
+                )} (${exp.reviews.toLocaleString()})</span>
+              </div>
+              <div class="duration">⏱️ ${exp.duracion}</div>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-primary" onclick="event.stopPropagation(); agregarACita('${
+                exp.id
+              }')">
+                💕 Agregar a cita
+              </button>
+              <button class="btn btn-secondary" onclick="event.stopPropagation(); verDetalles('${
+                exp.id
+              }')">
+                👁️ Ver más
+              </button>
+            </div>
+          </div>
+        </div>
+      `
+          )
+          .join("");
+      }
+
+      function seleccionarExperiencia(expId) {
+        const exp = EXPERIENCIAS.find((e) => e.id === expId);
+        if (exp) {
+          console.log("Experiencia seleccionada:", exp);
+          // Aquí podrías abrir un modal con detalles
+        }
+      }
+
+      function agregarACita(expId) {
+        const exp = EXPERIENCIAS.find((e) => e.id === expId);
+        if (!exp) return;
+
+        // Abrir el planificador de citas
+        abrirCitas();
+        
+        // Agregar la experiencia al plan
+        if (!planCita) planCita = [];
+        
+        // Evitar duplicados
+        if (planCita.find((p) => p.id === expId)) {
+          alert("🤔 Ya tienes esta experiencia en tu plan de cita");
+          return;
+        }
+
+        planCita.push(exp);
+        
+        // Actualizar el plan visual
+        actualizarPlanVisual();
+        
+        // Mostrar mensaje de confirmación
+        alert(`✨ "${exp.title}" agregado a tu plan de cita!`);
+      }
+
+      function verDetalles(expId) {
+        const exp = EXPERIENCIAS.find((e) => e.id === expId);
+        if (exp) {
+          alert(
+            `Detalles de ${exp.title}:\n\n${exp.descripcion}\n\nDuración: ${
+              exp.duracion
+            }\nDificultad: ${exp.dificultad}\nRating: ${exp.rating.toFixed(
+              1
+            )} ⭐`
+          );
+        }
+      }
+
+      function generarPlanificadorCitas() {
+        const experienciasRomanticas = EXPERIENCIAS.filter(
+          (exp) =>
+            exp.categoria.includes("gastronomia") ||
+            exp.categoria.includes("arte_musica_cine") ||
+            exp.categoria.includes("historia_cultura") ||
+            exp.title.toLowerCase().includes("parque")
+        );
+
+        document.getElementById("citasContent").innerHTML = `
+        <div style="padding: 20px;">
+          <div style="text-align: center; margin-bottom: 24px;">
+            <div style="font-size: 48px; margin-bottom: 16px;">💕</div>
+            <h3 style="margin-bottom: 8px; color: var(--txt);">¡Planificador de Citas!</h3>
+            <p style="color: var(--muted); margin-bottom: 24px; font-size: 14px;">
+              Crea el plan perfecto paso a paso
+            </p>
+          </div>
+
+          <!-- PASO 1: FECHA -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="color: var(--txt); margin-bottom: 12px; font-size: 16px;">📅 Paso 1: Elige la fecha</h4>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <input 
+                type="date" 
+                id="fechaCita"
+                min="${new Date().toISOString().split("T")[0]}"
+                style="
+                  flex: 1;
+                  padding: 12px;
+                  border: 1px solid var(--border);
+                  border-radius: 8px;
+                  background: var(--card);
+                  color: var(--txt);
+                  font-size: 14px;
+                "
+              />
+              <input 
+                type="time" 
+                id="horaCita"
+                value="19:00"
+                style="
+                  padding: 12px;
+                  border: 1px solid var(--border);
+                  border-radius: 8px;
+                  background: var(--card);
+                  color: var(--txt);
+                  font-size: 14px;
+                "
+              />
+            </div>
+          </div>
+
+          <!-- PASO 2: EXPERIENCIAS -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="color: var(--txt); margin-bottom: 12px; font-size: 16px;">📍 Paso 2: Selecciona experiencias</h4>
+            <div id="experienciasRomanticas" style="max-height: 200px; overflow-y: auto;">
+              ${experienciasRomanticas
+                .map(
+                  (exp) => `
+                <div class="experiencia-cita" onclick="seleccionarParaCita('${
+                  exp.id
+                }')" style="
+                  display: flex;
+                  align-items: center;
+                  padding: 12px;
+                  margin-bottom: 8px;
+                  background: var(--bg);
+                  border: 1px solid var(--border);
+                  border-radius: 8px;
+                  cursor: pointer;
+                  transition: all 0.2s ease;
+                " onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+                  <div style="
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 8px;
+                    background: linear-gradient(135deg, var(--accent), var(--accent2));
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 12px;
+                    font-size: 16px;
+                  ">
+                    ${
+                      exp.categoria.includes("gastronomia")
+                        ? "🍽️"
+                        : exp.categoria.includes("arte_musica_cine")
+                        ? "🎭"
+                        : exp.categoria.includes("historia_cultura")
+                        ? "🏛️"
+                        : "🌳"
+                    }
+                  </div>
+                  <div style="flex: 1;">
+                    <div style="color: var(--txt); font-weight: 500; font-size: 14px;">${
+                      exp.title
+                    }</div>
+                    <div style="color: var(--muted); font-size: 12px;">${
+                      exp.descripcion
+                    }</div>
+                  </div>
+                  <div style="color: var(--accent); font-weight: bold; font-size: 18px;">+</div>
+                </div>
+              `
+                )
+                .join("")}
+            </div>
+          </div>
+
+          <!-- PANORAMA PERSONALIZADO -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="color: var(--txt); margin-bottom: 12px; font-size: 16px;">✨ O agrega tu lugar especial</h4>
+            <div style="
+              background: var(--bg);
+              border: 1px solid var(--border);
+              border-radius: 8px;
+              padding: 16px;
+            ">
+              <div style="margin-bottom: 12px;">
+                <input 
+                  type="text" 
+                  id="nombrePersonalizado" 
+                  placeholder="Nombre del lugar (ej: Mi restaurante favorito)"
+                  style="
+                    width: 100%;
+                    padding: 8px 12px;
+                    border: 1px solid var(--border);
+                    border-radius: 6px;
+                    background: var(--card);
+                    color: var(--txt);
+                    font-size: 14px;
+                    margin-bottom: 8px;
+                  "
+                />
+                <input 
+                  type="text" 
+                  id="descripcionPersonalizada" 
+                  placeholder="Breve descripción"
+                  style="
+                    width: 100%;
+                    padding: 8px 12px;
+                    border: 1px solid var(--border);
+                    border-radius: 6px;
+                    background: var(--card);
+                    color: var(--txt);
+                    font-size: 14px;
+                    margin-bottom: 8px;
+                  "
+                />
+                <input 
+                  type="text" 
+                  id="ubicacionPersonalizada" 
+                  placeholder="Ubicación"
+                  style="
+                    width: 100%;
+                    padding: 8px 12px;
+                    border: 1px solid var(--border);
+                    border-radius: 6px;
+                    background: var(--card);
+                    color: var(--txt);
+                    font-size: 14px;
+                    margin-bottom: 12px;
+                  "
+                />
+              </div>
+              
+              <div style="display: flex; gap: 8px; margin-bottom: 12px; justify-content: center;">
+                <button onclick="seleccionarEmoji('🍽️')" class="emoji-btn" style="
+                  padding: 8px;
+                  border: 1px solid var(--border);
+                  background: var(--card);
+                  border-radius: 6px;
+                  cursor: pointer;
+                  font-size: 16px;
+                  transition: all 0.2s ease;
+                " onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">🍽️</button>
+                <button onclick="seleccionarEmoji('🎭')" class="emoji-btn">🎭</button>
+                <button onclick="seleccionarEmoji('🏛️')" class="emoji-btn">🏛️</button>
+                <button onclick="seleccionarEmoji('🌳')" class="emoji-btn">🌳</button>
+                <button onclick="seleccionarEmoji('☕')" class="emoji-btn">☕</button>
+                <span id="emojiSeleccionado" style="
+                  padding: 8px;
+                  border: 2px solid var(--accent);
+                  background: var(--accent-soft);
+                  border-radius: 6px;
+                  font-size: 16px;
+                  min-width: 40px;
+                  text-align: center;
+                ">💖</span>
+              </div>
+
+              <button onclick="agregarPanoramaPersonalizado()" style="
+                width: 100%;
+                padding: 10px;
+                background: linear-gradient(135deg, var(--accent), var(--accent2));
+                color: white;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: 500;
+                font-size: 14px;
+                transition: all 0.2s ease;
+              " onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+                ✨ Agregar al Plan
+              </button>
+            </div>
+          </div>
+
+          <!-- PASO 3: TU PLAN -->
+          <div id="planSeleccionado" style="margin-bottom: 24px; display: none;">
+            <h4 style="color: var(--txt); margin-bottom: 12px; font-size: 16px;">💖 Paso 3: Tu plan de cita</h4>
+            <div id="listaPlan" style="background: var(--accent-soft); border-radius: 8px; padding: 16px;">
+            </div>
+            
+            <!-- COMENTARIOS -->
+            <div style="margin-top: 16px;">
+              <textarea 
+                id="comentariosCita"
+                placeholder="Agrega un mensaje especial para tu pareja... ✨"
+                style="
+                  width: 100%;
+                  padding: 12px;
+                  border: 1px solid var(--border);
+                  border-radius: 8px;
+                  background: var(--card);
+                  color: var(--txt);
+                  font-size: 14px;
+                  resize: vertical;
+                  min-height: 80px;
+                "
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- PASO 4: COMPARTIR -->
+          <div id="opcionesCompartir" style="margin-bottom: 24px; display: none;">
+            <h4 style="color: var(--txt); margin-bottom: 12px; font-size: 16px;">📤 Paso 4: Envía tu cita</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+              <button onclick="enviarPorWhatsApp()" style="
+                padding: 12px;
+                background: #25D366;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 500;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                transition: all 0.2s ease;
+              " onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+                📱 WhatsApp
+              </button>
+              <button onclick="enviarPorEmail()" style="
+                padding: 12px;
+                background: #EA4335;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 500;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                transition: all 0.2s ease;
+              " onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+                ✉️ Email
+              </button>
+              <button onclick="agendarEnGoogle()" style="
+                padding: 12px;
+                background: #4285F4;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 500;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                transition: all 0.2s ease;
+              " onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+                📅 Google Calendar
+              </button>
+              <button onclick="descargarPlan()" style="
+                padding: 12px;
+                background: linear-gradient(135deg, var(--accent), var(--accent2));
+                color: white;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 500;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                transition: all 0.2s ease;
+              " onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+                💾 Descargar
+              </button>
+            </div>
+          </div>
+
+          <!-- BOTONES DE ACCIÓN -->
+          <div style="display: flex; gap: 12px;">
+            <button class="btn" onclick="limpiarPlan()" style="
+              flex: 1;
+              padding: 12px;
+              border: 1px solid var(--border);
+              background: white;
+              color: var(--muted);
+              border-radius: 8px;
+              cursor: pointer;
+              transition: all 0.2s ease;
+            " onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'">
+              🗑️ Limpiar
+            </button>
+            <button class="btn btn-primary" onclick="mostrarOpcionesCompartir()" style="
+              flex: 2;
+              padding: 12px;
+              background: linear-gradient(135deg, var(--accent), var(--accent2));
+              color: white;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+              font-weight: 500;
+              transition: all 0.2s ease;
+            " onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+              💕 Enviar Cita
+            </button>
+          </div>
+        </div>
+      `;
+
+        // Aplicar estilos a todos los emoji-btn
+        setTimeout(() => {
+          document.querySelectorAll(".emoji-btn").forEach((btn) => {
+            if (!btn.style.padding) {
+              btn.style.cssText = `
+              padding: 8px;
+              border: 1px solid var(--border);
+              background: var(--card);
+              border-radius: 6px;
+              cursor: pointer;
+              font-size: 16px;
+              transition: all 0.2s ease;
+            `;
+              btn.onmouseover = () => (btn.style.borderColor = "var(--accent)");
+              btn.onmouseout = () => (btn.style.borderColor = "var(--border)");
+            }
+          });
+        }, 100);
+      }
+
+      // Nuevas funciones para el planificador
+      function seleccionarParaCita(expId) {
+        const exp = EXPERIENCIAS.find((e) => e.id === expId);
+        if (!exp) return;
+
+        if (!planCita) planCita = [];
+
+        // Evitar duplicados
+        if (planCita.find((p) => p.id === expId)) {
+          alert("🤔 Ya tienes esta experiencia en tu plan de cita");
+          return;
+        }
+
+        planCita.push(exp);
+        actualizarPlanVisual();
+
+        // Feedback visual
+        const planDiv = document.getElementById("planSeleccionado");
+        planDiv.style.display = "block";
+        planDiv.style.animation = "fadeIn 0.3s ease";
+      }
+
+      function actualizarPlanVisual() {
+        const listaPlan = document.getElementById("listaPlan");
+        if (!planCita || planCita.length === 0) {
+          document.getElementById("planSeleccionado").style.display = "none";
+          return;
+        }
+
+        listaPlan.innerHTML = planCita
+          .map(
+            (exp, index) => `
+          <div style="
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            ${
+              index < planCita.length - 1
+                ? "border-bottom: 1px solid rgba(255,255,255,0.2);"
+                : ""
+            }
+          ">
+            <span style="
+              background: ${
+                exp.esPersonalizado
+                  ? "linear-gradient(135deg, var(--accent2), var(--accent))"
+                  : "linear-gradient(135deg, var(--accent), var(--accent2))"
+              };
+              color: white;
+              width: 28px;
+              height: 28px;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 14px;
+              font-weight: bold;
+              margin-right: 12px;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            ">${index + 1}</span>
+            <div style="
+              width: 36px;
+              height: 36px;
+              border-radius: 8px;
+              background: ${
+                exp.esPersonalizado 
+                  ? "linear-gradient(135deg, var(--accent2), var(--accent))" 
+                  : "linear-gradient(135deg, var(--accent), var(--accent2))"
+              };
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-right: 12px;
+              font-size: 18px;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            ">${
+              exp.emoji ||
+              (exp.categoria && exp.categoria.includes("gastronomia") ? "🍽️" :
+               exp.categoria && exp.categoria.includes("arte_musica_cine") ? "🎭" :
+               exp.categoria && exp.categoria.includes("historia_cultura") ? "🏛️" : "🌳")
+            }</div>
+            <div style="flex: 1;">
+              <div style="color: var(--txt); font-weight: 500; font-size: 15px; margin-bottom: 2px;">
+                ${exp.title}
+                ${exp.esPersonalizado ? '<span style="background: var(--accent2); color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; margin-left: 6px;">PERSONALIZADO</span>' : ''}
+              </div>
+              <div style="color: var(--muted); font-size: 12px;">
+                📍 ${exp.ciudad || exp.ubicacion || 'Santiago'} ${exp.descripcion ? '• ' + exp.descripcion : ''}
+              </div>
+            </div>
+            <button onclick="eliminarDelPlan(${index})" style="
+              background: rgba(255,255,255,0.1);
+              border: 1px solid rgba(255,255,255,0.2);
+              color: var(--muted);
+              border-radius: 6px;
+              width: 28px;
+              height: 28px;
+              cursor: pointer;
+              font-size: 12px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transition: all 0.2s ease;
+            " onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+              ✕
+            </button>
+          </div>
+        `).join("");
+
+        document.getElementById("planSeleccionado").style.display = "block";
+      }
+
+      function eliminarDelPlan(index) {
+        if (planCita && index >= 0 && index < planCita.length) {
+          planCita.splice(index, 1);
+          actualizarPlanVisual();
+        }
+      }
+
+      // ===== FUNCIONES PARA PANORAMAS PERSONALIZADOS =====
+      let emojiSeleccionadoActual = "💖";
+
+      function seleccionarEmoji(emoji) {
+        emojiSeleccionadoActual = emoji;
+        document.getElementById("emojiSeleccionado").textContent = emoji;
+
+        // Actualizar visual de botones emoji
+        document.querySelectorAll(".emoji-btn").forEach((btn) => {
+          btn.style.borderColor = "var(--border)";
+          btn.style.background = "var(--card)";
+        });
+
+        // Destacar el seleccionado
+        event.target.style.borderColor = "var(--accent)";
+        event.target.style.background = "var(--accent-soft)";
+      }
+
+      function agregarPanoramaPersonalizado() {
+        const nombre = document
+          .getElementById("nombrePersonalizado")
+          .value.trim();
+        const descripcion = document
+          .getElementById("descripcionPersonalizada")
+          .value.trim();
+        const ubicacion = document
+          .getElementById("ubicacionPersonalizada")
+          .value.trim();
+
+        // Validaciones
+        if (!nombre) {
+          alert("🤔 Por favor escribe el nombre del lugar");
+          return;
+        }
+        if (!descripcion) {
+          alert("🤔 Agrega una breve descripción del lugar");
+          return;
+        }
+
+        // Crear panorama personalizado
+        const panoramaPersonalizado = {
+          id: `personalizado_${Date.now()}`, // ID único
+          title: nombre,
+          descripcion: descripcion,
+          ciudad: ubicacion || "Santiago",
+          categoria: ["personalizado"],
+          emoji: emojiSeleccionadoActual,
+          esPersonalizado: true,
+          rating: 5.0, // Por defecto le ponemos 5 estrellas
+          duracion: "A definir",
+          dificultad: "Fácil",
+        };
+
+        // Agregar al plan
+        if (!planCita) planCita = [];
+        planCita.push(panoramaPersonalizado);
+
+        // Limpiar formulario
+        document.getElementById("nombrePersonalizado").value = "";
+        document.getElementById("descripcionPersonalizada").value = "";
+        document.getElementById("ubicacionPersonalizada").value = "";
+        emojiSeleccionadoActual = "💖";
+        document.getElementById("emojiSeleccionado").textContent = "💖";
+
+        // Resetear botones emoji
+        document.querySelectorAll(".emoji-btn").forEach((btn) => {
+          btn.style.borderColor = "var(--border)";
+          btn.style.background = "var(--card)";
+        });
+
+        // Mostrar mensaje de éxito
+        alert("✨ ¡Panorama agregado al plan!");
+
+        // Actualizar plan visual
+        actualizarPlanVisual();
+      }
+
+      // ===== NUEVAS FUNCIONES PARA COMPARTIR Y ENVÍO =====
+      function mostrarOpcionesCompartir() {
+        const fecha = document.getElementById('fechaCita').value;
+        const hora = document.getElementById('horaCita').value;
+        
+        if (!fecha) {
+          alert('📅 Por favor selecciona una fecha para la cita');
+          return;
+        }
+        
+        if (!planCita || planCita.length === 0) {
+          alert('📍 Agrega al menos una experiencia a tu plan');
+          return;
+        }
+
+        document.getElementById('opcionesCompartir').style.display = 'block';
+        document.getElementById('opcionesCompartir').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      function enviarPorWhatsApp() {
+        const fecha = document.getElementById('fechaCita').value;
+        const hora = document.getElementById('horaCita').value;
+        const comentarios = document.getElementById('comentariosCita').value;
+        
+        if (!fecha) {
+          alert('Por favor selecciona una fecha para la cita');
+          return;
+        }
+        
+        // Formatear fecha bonita
+        const fechaFormateada = new Date(fecha).toLocaleDateString('es-ES', { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
+
+        // Mensaje limpio y romántico sin emojis problemáticos
+        let mensaje = `♡ NUESTRA PROXIMA AVENTURA ♡
+
+Fecha: ${fechaFormateada} a las ${hora}
+
+--- ACTIVIDADES PLANEADAS ---
+`;
+
+        // Agregar actividades
+        if (planCita && planCita.length > 0) {
+          planCita.forEach((item, index) => {
+            mensaje += `${index + 1}. ${item.title}
+• Ubicacion: ${item.ciudad || item.ubicacion || 'Santiago'}
+• Descripcion: ${item.descripcion || 'Experiencia increible'}
+• Ver en mapa: https://maps.google.com/search/${item.title.replace(/ /g, '+')}+${(item.ciudad || 'Santiago').replace(/ /g, '+')}
+
+`;
+          });
+        }
+
+        // Agregar comentario personal si existe
+        if (comentarios) {
+          mensaje += `♡ MENSAJE ESPECIAL ♡
+${comentarios}
+
+`;
+        }
+
+        mensaje += `Saludos mi amor,
+Nos vemos en nuestra proxima aventura!
+
+~ Creado con Together App ~`;
+        
+        // URL simple que SÍ va a funcionar
+        const whatsappURL = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+        window.open(whatsappURL, '_blank');
+      }
+
+      function enviarPorEmail() {
+        const fecha = document.getElementById('fechaCita').value;
+        const hora = document.getElementById('horaCita').value;
+        const comentarios = document.getElementById('comentariosCita').value;
+        
+        if (!fecha) {
+          alert('Por favor selecciona una fecha para la cita');
+          return;
+        }
+        
+        // Formatear fecha bonita
+        const fechaFormateada = new Date(fecha).toLocaleDateString('es-ES', { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
+
+        const asunto = encodeURIComponent('💕 Nuestra Próxima Aventura');
+        
+        let cuerpo = `¡Hola mi amor! 💕
+
+He planeado algo especial para nosotros:
+
+💕 NUESTRA PRÓXIMA AVENTURA 💕
+
+📅 ${fechaFormateada} a las ${hora}
+
+`;
+
+        // Agregar actividades
+        if (planCita && planCita.length > 0) {
+          cuerpo += `🌟 Actividades planeadas:\n`;
+          planCita.forEach((item, index) => {
+            cuerpo += `${index + 1}. ${item.title}\n`;
+            cuerpo += `   📍 ${item.ciudad || item.ubicacion || 'Santiago'}\n`;
+            if (item.descripcion) {
+              cuerpo += `   ✨ ${item.descripcion}\n`;
+            }
+            cuerpo += `   🗺️ Ver en mapa: https://maps.google.com/search/${encodeURIComponent(item.title + ' ' + (item.ciudad || 'Santiago'))}\n\n`;
+          });
+        }
+
+        // Agregar comentario personal si existe
+        if (comentarios) {
+          cuerpo += `💌 ${comentarios}\n\n`;
+        }
+
+        cuerpo += `Saludos,\nNos vemos en nuestra próxima aventura 🌟\n\nCon amor 💖\n\nCreado con Together App`;
+
+        const cuerpoCodificado = encodeURIComponent(cuerpo);
+        window.open(`mailto:?subject=${asunto}&body=${cuerpoCodificado}`, '_blank');
+      }
+
+      function agendarEnGoogle() {
+        const fecha = document.getElementById('fechaCita').value;
+        const hora = document.getElementById('horaCita').value;
+        const comentarios = document.getElementById('comentariosCita').value;
+        
+        if (!fecha || !hora) {
+          alert('📅 Por favor selecciona fecha y hora');
+          return;
+        }
+
+        const fechaHora = new Date(`${fecha}T${hora}`);
+        const fechaFin = new Date(fechaHora.getTime() + (3 * 60 * 60 * 1000)); // 3 horas después
+        
+        const titulo = encodeURIComponent('💕 Cita Especial');
+        const descripcion = encodeURIComponent(`${generarTextoDelPlan()}\n\n${comentarios ? `Mensaje especial: ${comentarios}` : ''}`);
+        const fechaInicio = fechaHora.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+        const fechaFinal = fechaFin.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+        const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titulo}&dates=${fechaInicio}/${fechaFinal}&details=${descripcion}`;
+        window.open(url, '_blank');
+      }
+
+      function descargarPlan() {
+        const planTexto = generarTextoDelPlan();
+        const comentarios = document.getElementById('comentariosCita').value;
+        const contenido = `💕 NUESTRA PRÓXIMA AVENTURA 💕\n\n${planTexto}\n\n${comentarios ? `💌 Mensaje especial:\n${comentarios}\n\n` : ''}Creado con Together App ✨`;
+        
+        const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        const fecha = document.getElementById('fechaCita').value || 'mi-cita';
+        link.href = URL.createObjectURL(blob);
+        link.download = `nuestra-aventura-${fecha}.txt`;
+        link.click();
+      }
+
+      function generarTextoDelPlan() {
+        const fecha = document.getElementById('fechaCita').value;
+        const hora = document.getElementById('horaCita').value;
+        const fechaFormateada = fecha ? new Date(fecha).toLocaleDateString('es-ES', { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        }) : '';
+
+        let texto = `${fechaFormateada} a las ${hora}\n\n`;
+        
+        if (planCita && planCita.length > 0) {
+          planCita.forEach((item, index) => {
+            // Usar texto simple en lugar de emojis para WhatsApp
+            let tipoLugar = '';
+            if (item.categoria && item.categoria.includes('gastronomia')) {
+              tipoLugar = 'Restaurante';
+            } else if (item.categoria && item.categoria.includes('arte_musica_cine')) {
+              tipoLugar = 'Arte/Cultura';
+            } else if (item.categoria && item.categoria.includes('historia_cultura')) {
+              tipoLugar = 'Historia';
+            } else {
+              tipoLugar = 'Naturaleza';
+            }
+            
+            texto += `${index + 1}. ${item.title}\n`;
+            texto += `   Ubicación: ${item.ciudad || item.ubicacion || 'Santiago'}\n`;
+            texto += `   Tipo: ${tipoLugar}\n`;
+            if (item.descripcion) {
+              texto += `   Descripción: ${item.descripcion}\n`;
+            }
+            if (item.esPersonalizado) {
+              texto += `   (Lugar especial personalizado)\n`;
+            }
+            texto += '\n';
+          });
+        }
+
+        const comentarios = document.getElementById('comentariosCita') ? document.getElementById('comentariosCita').value : '';
+        if (comentarios) {
+          texto += `Mensaje especial:\n${comentarios}`;
+        }
+
+        return texto;
+      }
+
+      function limpiarPlan() {
+        planCita = [];
+        document.getElementById("planSeleccionado").style.display = "none";
+        document.getElementById("opcionesCompartir").style.display = "none";
+
+        // También limpiar el formulario personalizado
+        document.getElementById("nombrePersonalizado").value = "";
+        document.getElementById("descripcionPersonalizada").value = "";
+        document.getElementById("ubicacionPersonalizada").value = "";
+        document.getElementById("fechaCita").value = "";
+        document.getElementById("horaCita").value = "19:00";
+        document.getElementById("comentariosCita").value = "";
+        emojiSeleccionadoActual = "💖";
+        document.getElementById("emojiSeleccionado").textContent = "💖";
+
+        // Resetear botones emoji
+        document.querySelectorAll(".emoji-btn").forEach((btn) => {
+          btn.style.borderColor = "var(--border)";
+          btn.style.background = "var(--card)";
+        });
+      }
+
+      // ===== INIT =====
+      function init() {
+        renderChips();
+        renderizar();
+
+        // Event listeners
+        sortBy.addEventListener("change", (e) => {
+          ordenActual = e.target.value;
+          renderizar();
+        });
+
+        // Mensaje de bienvenida
+        setTimeout(() => {
+          console.log(
+            "🌿 MJZV Nature v3.0 - Panoramas & Citas en Santiago con imágenes HD"
+          );
+        }, 1000);
+      }
+
+      // BOOT
+      init();
+    </script>
+  </body>
+</html>
